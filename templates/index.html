@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <h2>新しい予約</h2>
+  <form action="{{ url_for('schedule') }}" method="post" enctype="multipart/form-data" class="schedule-form">
+    <label>
+      <span>Webhook URL</span>
+      <input type="url" name="webhook_url" id="webhook_url" required
+             placeholder="https://discord.com/api/webhooks/..."
+             value="{{ default_webhook }}">
+      <small>Discord のチャンネル設定 → 連携サービス → ウェブフック で取得できます。</small>
+    </label>
+
+    <label>
+      <span>本文</span>
+      <textarea name="content" rows="5" maxlength="2000" placeholder="送信するテキスト（2000 文字まで）"></textarea>
+    </label>
+
+    <label>
+      <span>画像（任意、8MB まで）</span>
+      <input type="file" name="image" accept="image/png,image/jpeg,image/gif,image/webp">
+    </label>
+
+    <label>
+      <span>送信日時</span>
+      <input type="datetime-local" name="scheduled_at" required>
+      <small>お使いのブラウザのローカル時刻で指定してください。</small>
+    </label>
+
+    <button type="submit">予約する</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>予約一覧</h2>
+  {% if posts %}
+    <table class="posts">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>送信日時</th>
+          <th>状態</th>
+          <th>本文</th>
+          <th>画像</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in posts %}
+          <tr class="status-{{ p['status'] }}">
+            <td>{{ p['id'] }}</td>
+            <td><time data-utc="{{ p['scheduled_at'] }}Z">{{ p['scheduled_at'] }} UTC</time></td>
+            <td>
+              <span class="badge badge-{{ p['status'] }}">{{ p['status'] }}</span>
+              {% if p['status'] == 'failed' and p['error'] %}
+                <div class="error-msg">{{ p['error'] }}</div>
+              {% endif %}
+              {% if p['status'] == 'sent' and p['sent_at'] %}
+                <div class="meta">送信: <time data-utc="{{ p['sent_at'] }}Z">{{ p['sent_at'] }} UTC</time></div>
+              {% endif %}
+            </td>
+            <td class="content-cell">{{ p['content'] or '—' }}</td>
+            <td>
+              {% if p['image_path'] %}
+                {% set fname = p['image_path'].split('/')[-1] %}
+                <a href="{{ url_for('uploaded_file', name=fname) }}" target="_blank" rel="noopener">
+                  <img src="{{ url_for('uploaded_file', name=fname) }}" alt="preview" class="thumb">
+                </a>
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td>
+              {% if p['status'] == 'pending' %}
+                <form action="{{ url_for('cancel', post_id=p['id']) }}" method="post"
+                      onsubmit="return confirm('予約 #{{ p['id'] }} をキャンセルしますか?');">
+                  <button type="submit" class="danger">キャンセル</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="muted">まだ予約はありません。</p>
+  {% endif %}
+</section>
+{% endblock %}

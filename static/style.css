@@ -1,0 +1,141 @@
+:root {
+  --bg: #f5f6f8;
+  --card: #ffffff;
+  --border: #e3e5ea;
+  --text: #1f2328;
+  --muted: #6b7280;
+  --primary: #5865f2;
+  --primary-hover: #4752c4;
+  --danger: #d73a49;
+  --success: #1a7f37;
+  --warning: #bf8700;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
+               "Noto Sans CJK JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+header {
+  padding: 24px 32px 8px;
+}
+header h1 { margin: 0 0 4px; font-size: 22px; }
+header .subtitle { margin: 0; color: var(--muted); font-size: 14px; }
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px 32px 64px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+.card h2 { margin-top: 0; font-size: 16px; }
+
+.schedule-form label {
+  display: block;
+  margin-bottom: 16px;
+}
+.schedule-form label > span {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.schedule-form input[type="url"],
+.schedule-form input[type="datetime-local"],
+.schedule-form textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+}
+.schedule-form textarea { resize: vertical; }
+.schedule-form small { color: var(--muted); font-size: 12px; }
+
+button {
+  background: var(--primary);
+  color: white;
+  border: 0;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+button:hover { background: var(--primary-hover); }
+button.danger { background: var(--danger); }
+button.danger:hover { background: #b22a36; }
+
+.flashes { list-style: none; padding: 0; margin: 0 0 16px; }
+.flash {
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.flash-success { background: #dafbe1; color: var(--success); }
+.flash-error { background: #ffebe9; color: var(--danger); }
+
+table.posts {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+table.posts th, table.posts td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+table.posts th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+.content-cell { white-space: pre-wrap; max-width: 320px; }
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.badge-pending   { background: #eef2ff; color: #3538cd; }
+.badge-sending   { background: #fef3c7; color: var(--warning); }
+.badge-sent      { background: #dafbe1; color: var(--success); }
+.badge-failed    { background: #ffebe9; color: var(--danger); }
+.badge-cancelled { background: #e5e7eb; color: var(--muted); }
+
+.error-msg {
+  margin-top: 4px;
+  color: var(--danger);
+  font-size: 12px;
+  max-width: 320px;
+  word-break: break-word;
+}
+.meta { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+.thumb {
+  max-width: 80px;
+  max-height: 80px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+.muted { color: var(--muted); }
+
+tr.status-sent { opacity: 0.75; }
+tr.status-cancelled { opacity: 0.55; }
